@@ -19,17 +19,22 @@ While describing your solution you have to specify tech stack/tools used (and ju
 
 Please don’t spend too much time on this, it’s mostly informative and for you to research and propose an initial approach.
 
-
-
 -----------------------------------------
 
 ANSWER 
 
 ------------------------------------
 
-for this problem, my approach would be make the financial distress score which predict financial distress of individual by the end of current month or specific cycle (i.e. quarterly )into scale of 1-100, which 1 means very dangerous financial distress and 100 means very healthy financial. for example if load the prediction on 15 January based on my January financial transaction then the model will predict what kind of score that it will be on the end of January. Which give user helpful insight about how should they spend etc. 
+for this problem, my approach would be make the financial distress score which predict financial distress of individual by the end of current month or specific cycle (i.e. quarterly ) into scale of 1-100, which 1 means very dangerous financial distress and 100 means very healthy financial. for example if load the prediction on 15 January based on my January financial transaction then the model will predict what kind of score that it will be on the end of January. Which give user helpful insight about how should they spend etc. 
 
-Since we build scoring based from 1 to 100 to asses financial distress, we could use linear regression in order to predict the score. Before we build Linear Regression, we need to build some of the features for example with some following features to be used :
+In order to build financial distress scoring from 1 to 100, we could take few approach:
+
+- take the problem as regression problem with suppressing output value lower than 1 as 1 and output value higher than 100 as 100. for this we could use a  linear regression libraries like scikit-learn or deep learning based using tensorflow or pytorch. 
+- take the problem as classification problem with 2 class ( i.e. bad financial and good financial) with probability for good financial class used as score. for example the output prediction is 78% being good financial class then we show the score as 78.  for this we could use a any kind of classical classification algorithm (SVM, Random Forest) or deep-learning based classification. 
+
+Based on those 2 options and more thought about it, I changed my mind and prefer seeing this problem as  classification problems with probability as a score. i am thinking that to deal with some extreme data would be better using classification with probability as financial distress score. since there is possibility that regression will give such huge number and when we suppress them to either 0 or 100 it will lost its unique aspect or meaning
+
+Before we build the classification model, we need to build some of the features for example with some following features to be used :
 
 - Recurring monthly individual income 
 - Recurring monthly individual expense  
@@ -47,12 +52,12 @@ Since we build scoring based from 1 to 100 to asses financial distress, we could
 
 Basically the features used is mostly about stability of income and expense on regular time interval. Since we can easily seen financial prowess of user based on their income or expense pattern and their environment.
 
-After we build the features then we need to build the dataset. we could build dataset based on the past available transaction history. For example we could make data based on transactions or any data from first of the month  to 15th of the months and take the features we need and label it based from the help of expert or financial distress ratio formula. 
+After we build the features then we need to build the dataset. we could build dataset based on the past available transaction history. For example we could make data based on transactions or any data from first of the month  to 15th of the months and take the features we need and label it based from the help of expert or financial distress ratio formula and mapping it into good financial or bad financial class. 
 
-For picking libraries for linear regression model we can choose either:
+Next step is we will build our classification problem, For this i have 2 options :
 
-- Use Scikit-learn to build the preliminary model and then gradually moving into Tensorflow, Pytorch or any deep learning regression model 
-- Deep dive into  deep learning regression model.
+- Use traditional classification algorithm to build the preliminary model and then gradually moving into Tensorflow, Pytorch or any deep learning regression model. For traditional classification algorithm, I highly preferred we started from Trees-based algorithm like Random Forest or XGBoost as base models from my experiences since both of them have really good accuracy with fast training times. 
+- Deep dive into deep learning classification model.
 
 The need to use deep learning regression model is in favor for updating the model regularly since in theory we could easily re-train existing deep learning model from saved state or weights with new data that we generated.
 
